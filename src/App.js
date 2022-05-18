@@ -1,14 +1,23 @@
-import "./App.css";
-import {useState} from "react";
+import {useState, useEffect, useRef} from "react";
 import {useWeb3React} from "@web3-react/core";
 import {injected} from "./wallet/Connector";
 import web3 from "web3";
 import Swal from "sweetalert2";
 import logo from "./logo.webp";
+import {Modal} from "bootstrap";
+import "./App.css";
 
 function App() {
 	const [minting, setMinting] = useState(false);
 	const {active, account, library, activate, deactivate} = useWeb3React();
+	const [modal, setModal] = useState(null);
+	const [modalData, setModalData] = useState(false);
+	const nftModal = useRef();
+	const price = "0.01";
+
+	useEffect(() => {
+		setModal(new Modal(nftModal.current));
+	}, []);
 
 	const apes = [
 		{
@@ -82,8 +91,6 @@ function App() {
 	async function mint() {
 		setMinting(true);
 		const myAccount = "0xD746641E41F90f8C0CCD1d8187444e1CAb08143C";
-		const price = "0.01";
-
 		let obj = {
 			to: myAccount,
 			from: account,
@@ -152,19 +159,66 @@ function App() {
 								className="img-fluid"
 								src={ape.img}
 								alt={`ape_${index}`}
+								onClick={() => {
+									setModalData(ape);
+									modal.show();
+								}}
 							/>
-							{active && (
-								<button
-									type="button"
-									disabled={minting}
-									onClick={mint}
-									className="btn btn-outline-success btn-small mt-3 w-100"
-								>
-									{minting ? "Waiting confirmation." : "Mint"}
-								</button>
-							)}
 						</div>
 					))}
+				</div>
+				{/* Modal */}
+				<div
+					className="modal fade"
+					ref={nftModal}
+					tabIndex="-1"
+					aria-labelledby="nftModalLabel"
+					aria-hidden="true"
+				>
+					<div className="modal-dialog">
+						<div className="modal-content">
+							<div className="modal-header">
+								<h5 className="modal-title" id="nftModalLabel">
+									{price} ETH
+								</h5>
+								<button
+									type="button"
+									className="btn-close"
+									onClick={() => modal.hide()}
+									aria-label="Close"
+								></button>
+							</div>
+							<div className="modal-body">
+								<img
+									className="img-fluid"
+									src={modalData.img}
+									alt=""
+								/>
+							</div>
+							<div className="modal-footer">
+								{active ? (
+									<button
+										type="button"
+										disabled={minting}
+										onClick={mint}
+										className="btn btn-outline-primary w-100"
+									>
+										{minting
+											? "Waiting confirmation."
+											: "Mint"}
+									</button>
+								) : (
+									<button
+										onClick={connect}
+										class="btn btn-outline-success w-100"
+										type="button"
+									>
+										Connect Wallet
+									</button>
+								)}
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</>
