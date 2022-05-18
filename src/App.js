@@ -4,6 +4,7 @@ import {useWeb3React} from "@web3-react/core";
 import {injected} from "./wallet/Connector";
 import web3 from "web3";
 import Swal from "sweetalert2";
+import logo from "./logo.webp";
 
 function App() {
 	const [minting, setMinting] = useState(false);
@@ -62,6 +63,7 @@ function App() {
 			img: "https://everipedia-storage.s3.amazonaws.com/GalleryMediaItem/lang_en/bored-ape-yatch-club/7D401B7B-DF32-4E58-80E1-3B767561C0FFjpeg.jpeg",
 		},
 	];
+
 	async function connect() {
 		try {
 			await activate(injected);
@@ -111,15 +113,34 @@ function App() {
 		<>
 			<nav class="navbar sticky-top navbar-light bg-white border-bottom">
 				<div class="container-fluid">
-					<span class="navbar-brand">Bored Monkey</span>
+					<a href="/" class="navbar-brand d-flex align-items-center">
+						<img
+							src={logo}
+							alt="Bored Monkey"
+							width="30"
+							height="30"
+							class="me-2"
+						/>
+						Bored Monkey
+					</a>
 					<form class="d-flex">
-						<button
-							onClick={active ? disconnect : connect}
-							class="btn btn-outline-success"
-							type="button"
-						>
-							{active ? "Disconnect" : "Connect Wallet"}
-						</button>
+						{active ? (
+							<button
+								onClick={disconnect}
+								class="btn btn-outline-danger"
+								type="button"
+							>
+								Disconnect
+							</button>
+						) : (
+							<button
+								onClick={connect}
+								class="btn btn-outline-success"
+								type="button"
+							>
+								Connect Wallet
+							</button>
+						)}
 					</form>
 				</div>
 			</nav>
