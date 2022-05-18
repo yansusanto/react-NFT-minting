@@ -38,6 +38,7 @@ export default function App() {
 	async function mint() {
 		setMinting(true);
 		const myAccount = "0xD746641E41F90f8C0CCD1d8187444e1CAb08143C";
+
 		let obj = {
 			to: myAccount,
 			from: account,
