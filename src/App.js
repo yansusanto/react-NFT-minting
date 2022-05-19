@@ -114,7 +114,7 @@ export default function App() {
 							>
 								Disconnect
 							</button>
-						) : isMobile ? (
+						) : (
 							<button
 								onClick={connect}
 								className="btn btn-outline-success"
@@ -122,10 +122,12 @@ export default function App() {
 							>
 								Connect Wallet
 							</button>
-						) : (
+						)}
+						{!isMobile && (
 							<a
 								href="https://metamask.app.link/dapp/boredmonkey.netlify.app"
-								className="btn btn-outline-success"
+								className="btn btn-outline-success ms-2"
+								type="button"
 							>
 								MetaMask
 							</a>
