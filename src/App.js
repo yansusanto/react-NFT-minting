@@ -4,9 +4,10 @@ import {injected} from "./wallet/Connector";
 import web3 from "web3";
 import items from "./api/items";
 import Swal from "sweetalert2";
-import logo from "./logo.webp";
 import {Modal} from "bootstrap";
 import "./App.css";
+import logo from "./assets/logo.webp";
+import eth from "./assets/eth.svg";
 
 export default function App() {
 	const [products] = useState(items);
@@ -145,8 +146,9 @@ export default function App() {
 					<div className="modal-dialog">
 						<div className="modal-content">
 							<div className="modal-header">
-								<h5 className="modal-title" id="nftModalLabel">
-									{data.price} ETH
+								<h5 className="modal-title d-flex align-items-center">
+									<img src={eth} alt="ethereum" height="20" />
+									{data.price}
 								</h5>
 								<button
 									type="button"
@@ -171,7 +173,7 @@ export default function App() {
 										className="btn btn-outline-primary w-100"
 									>
 										{minting
-											? "Waiting confirmation."
+											? "Waiting confirmation.."
 											: "Mint"}
 									</button>
 								) : (
