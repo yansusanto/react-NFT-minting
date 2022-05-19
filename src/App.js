@@ -21,6 +21,10 @@ export default function App() {
 		setModal(new Modal(nftModal.current));
 	}, []);
 
+	const isMobile = () => {
+		return "ontouchstart" in window || "onmsgesturechange" in window;
+	};
+
 	async function connect() {
 		try {
 			await activate(injected);
@@ -83,38 +87,48 @@ export default function App() {
 
 	return (
 		<>
-			<nav class="navbar sticky-top navbar-light bg-white border-bottom">
-				<div class="container-fluid">
-					<a href="/" class="navbar-brand d-flex align-items-center">
+			<nav className="navbar sticky-top navbar-light bg-white border-bottom">
+				<div className="container-fluid">
+					<a
+						href="/"
+						className="navbar-brand d-flex align-items-center"
+					>
 						<img
 							src={logo}
 							alt="Bored Monkey"
 							width="30"
 							height="30"
-							class="me-2"
+							className="me-2"
 						/>
 						Bored Monkey
 					</a>
-					<form class="d-flex align-items-center">
+					<form className="d-flex align-items-center">
 						<span className="small text-muted me-3 d-none d-md-block">
 							{account}
 						</span>
 						{active ? (
 							<button
 								onClick={disconnect}
-								class="btn btn-outline-danger"
+								className="btn btn-outline-danger"
 								type="button"
 							>
 								Disconnect
 							</button>
-						) : (
+						) : isMobile ? (
 							<button
 								onClick={connect}
-								class="btn btn-outline-success"
+								className="btn btn-outline-success"
 								type="button"
 							>
 								Connect Wallet
 							</button>
+						) : (
+							<a
+								href="https://metamask.app.link/dapp/boredmonkey.netlify.app"
+								className="btn btn-outline-success"
+							>
+								MetaMask
+							</a>
 						)}
 					</form>
 				</div>
@@ -179,7 +193,7 @@ export default function App() {
 								) : (
 									<button
 										onClick={connect}
-										class="btn btn-outline-success w-100"
+										className="btn btn-outline-success w-100"
 										type="button"
 									>
 										Connect Wallet
