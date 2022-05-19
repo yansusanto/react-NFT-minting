@@ -23,6 +23,14 @@ export default function App() {
 	async function connect() {
 		try {
 			await activate(injected);
+			Swal.fire({
+				icon: "success",
+				iconColor: "#2ecc71",
+				text: "You have successfully connected your wallet!",
+				showConfirmButton: false,
+				position: "top-end",
+				timer: 1500,
+			});
 		} catch (ex) {
 			console.log(ex);
 		}
@@ -30,6 +38,14 @@ export default function App() {
 	async function disconnect() {
 		try {
 			deactivate();
+			Swal.fire({
+				icon: "warning",
+				iconColor: "#ec644b",
+				text: "You have disconnected your wallet!",
+				showConfirmButton: false,
+				position: "top-end",
+				timer: 1500,
+			});
 		} catch (ex) {
 			console.log(ex);
 		}
@@ -54,7 +70,7 @@ export default function App() {
 					icon: "error",
 					title: "Oops...",
 					text: "Something went wrong!",
-					confirmButtonColor: "#f27474",
+					confirmButtonColor: "#ec644b",
 					footer: "<a href>Why do I have this issue?</a>",
 				});
 				setMinting(false);
@@ -78,7 +94,10 @@ export default function App() {
 						/>
 						Bored Monkey
 					</a>
-					<form class="d-flex">
+					<form class="d-flex align-items-center">
+						<span className="small text-muted me-3 d-none d-md-block">
+							{account}
+						</span>
 						{active ? (
 							<button
 								onClick={disconnect}
