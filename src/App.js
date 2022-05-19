@@ -21,10 +21,6 @@ export default function App() {
 		setModal(new Modal(nftModal.current));
 	}, []);
 
-	const isMobile = () => {
-		return "ontouchstart" in window || "onmsgesturechange" in window;
-	};
-
 	async function connect() {
 		try {
 			await activate(injected);
@@ -122,15 +118,6 @@ export default function App() {
 							>
 								Connect Wallet
 							</button>
-						)}
-						{!isMobile && (
-							<a
-								href="https://metamask.app.link/dapp/boredmonkey.netlify.app"
-								className="btn btn-outline-success ms-2"
-								type="button"
-							>
-								MetaMask
-							</a>
 						)}
 					</form>
 				</div>
