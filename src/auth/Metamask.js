@@ -20,6 +20,13 @@ export default function Auth() {
 		setModal(new Modal(nftModal.current));
 	}, []);
 
+	function isMobile() {
+		return "ontouchstart" in window || "onmsgesturechange" in window;
+	}
+
+	const dappUrl = "boredmonkey.netlify.app";
+	const metamaskAppDeepLink = "https://metamask.app.link/dapp/" + dappUrl;
+
 	async function connect() {
 		try {
 			await activate(injected);
@@ -99,7 +106,10 @@ export default function Auth() {
 					</a>
 					<form className="d-flex align-items-center">
 						<span className="small text-muted me-3 d-none d-md-block">
-							{account}
+							{account &&
+								account.substring(0, 6) +
+									"..." +
+									account.substring(account.length - 6)}
 						</span>
 						{active ? (
 							<button
@@ -110,13 +120,24 @@ export default function Auth() {
 								Disconnect
 							</button>
 						) : (
-							<button
-								onClick={connect}
-								className="btn btn-outline-success"
-								type="button"
-							>
-								Connect Wallet
-							</button>
+							<>
+								{isMobile() ? (
+									<a
+										href={metamaskAppDeepLink}
+										className="btn btn-outline-success"
+									>
+										Connect Wallet
+									</a>
+								) : (
+									<button
+										onClick={connect}
+										className="btn btn-outline-success"
+										type="button"
+									>
+										Connect Wallet
+									</button>
+								)}
+							</>
 						)}
 					</form>
 				</div>
