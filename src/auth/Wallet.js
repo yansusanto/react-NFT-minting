@@ -19,9 +19,12 @@ export default function Wallet() {
 		checkConnectedWallet();
 	}, []);
 
-	function isMobileDevice() {
+	function isMobile() {
 		return "ontouchstart" in window || "onmsgesturechange" in window;
 	}
+
+	const dappUrl = "boredmonkey.netlify.app";
+	const metamaskAppDeepLink = "https://metamask.app.link/dapp/" + dappUrl;
 
 	const detectCurrentProvider = () => {
 		let provider;
@@ -67,18 +70,6 @@ export default function Wallet() {
 					position: "top-end",
 					timer: 1500,
 				});
-			}
-			if (isMobileDevice()) {
-				const dappUrl = "boredmonkey.netlify.app";
-				const metamaskAppDeepLink =
-					"https://metamask.app.link/dapp/" + dappUrl;
-				return (
-					<a href={metamaskAppDeepLink}>
-						<button className="btn btn-outline-success">
-							Connect to MetaMask
-						</button>
-					</a>
-				);
 			}
 		} catch (err) {
 			console.log(
@@ -152,13 +143,23 @@ export default function Wallet() {
 								</button>
 							</>
 						) : (
-							<button
-								onClick={onConnect}
-								className="btn btn-outline-success"
-								type="button"
-							>
-								Connect to MetaMask
-							</button>
+							<>
+								{!isMobile() ? (
+									<a href={metamaskAppDeepLink}>
+										<button className="btn btn-outline-success">
+											Connect to MetaMask
+										</button>
+									</a>
+								) : (
+									<button
+										onClick={onConnect}
+										className="btn btn-outline-success"
+										type="button"
+									>
+										Connect to MetaMask
+									</button>
+								)}
+							</>
 						)}
 					</form>
 				</div>
