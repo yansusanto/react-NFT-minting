@@ -145,10 +145,11 @@ export default function Wallet() {
 						) : (
 							<>
 								{isMobile() ? (
-									<a href={metamaskAppDeepLink}>
-										<button className="btn btn-outline-success">
-											Connect to MetaMask
-										</button>
+									<a
+										href={metamaskAppDeepLink}
+										className="btn btn-outline-success"
+									>
+										Connect to MetaMask
 									</a>
 								) : (
 									<button
