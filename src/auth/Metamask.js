@@ -133,7 +133,7 @@ export default function Auth() {
 								className="me-2"
 							/>
 						) : (
-							<div ref={avatar} className="me-2 mt-2"></div>
+							<div ref={avatar} className="me-2 d-flex"></div>
 						)}
 						Bored Monkey
 					</a>
