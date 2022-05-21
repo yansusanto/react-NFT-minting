@@ -5,6 +5,7 @@ import web3 from "web3";
 import items from "../api/items";
 import Swal from "sweetalert2";
 import {Modal} from "bootstrap";
+import jazzicon from "@metamask/jazzicon";
 import logo from "../assets/logo.webp";
 import eth from "../assets/eth.svg";
 
@@ -15,6 +16,21 @@ export default function Auth() {
 	const [modal, setModal] = useState(null);
 	const [data, setData] = useState(false);
 	const nftModal = useRef();
+	const avatar = useRef();
+
+	useEffect(() => {
+		const element = avatar.current;
+		if (element && account) {
+			const addr = account.slice(2, 10);
+			const seed = parseInt(addr, 16);
+			// ----------- jazz it to size 30 icon --------
+			const icon = jazzicon(30, seed);
+			if (element.firstChild) {
+				element.removeChild(element.firstChild);
+			}
+			element.appendChild(icon);
+		}
+	}, [account, avatar]);
 
 	useEffect(() => {
 		setModal(new Modal(nftModal.current));
@@ -29,15 +45,28 @@ export default function Auth() {
 
 	async function connect() {
 		try {
-			await activate(injected);
-			Swal.fire({
-				icon: "success",
-				iconColor: "#2ecc71",
-				text: "You have successfully connected your wallet!",
-				showConfirmButton: false,
-				position: "top-end",
-				timer: 1500,
+			let isCancelled = false;
+			await activate(injected, () => {
+				Swal.fire({
+					icon: "warning",
+					iconColor: "#ec644b",
+					text: "You have cancelled the connection!",
+					showConfirmButton: false,
+					position: "top-end",
+					timer: 1500,
+				});
+				isCancelled = true;
 			});
+			if (!isCancelled) {
+				Swal.fire({
+					icon: "success",
+					iconColor: "#2ecc71",
+					text: "You have successfully connected your wallet!",
+					showConfirmButton: false,
+					position: "top-end",
+					timer: 1500,
+				});
+			}
 		} catch (ex) {
 			console.log(ex);
 		}
@@ -95,13 +124,17 @@ export default function Auth() {
 						href="/"
 						className="navbar-brand d-flex align-items-center"
 					>
-						<img
-							src={logo}
-							alt="Bored Monkey"
-							width="30"
-							height="30"
-							className="me-2"
-						/>
+						{!active ? (
+							<img
+								src={logo}
+								alt="Bored Monkey"
+								width="30"
+								height="30"
+								className="me-2"
+							/>
+						) : (
+							<div ref={avatar} className="me-2 mt-2"></div>
+						)}
 						Bored Monkey
 					</a>
 					<form className="d-flex align-items-center">
