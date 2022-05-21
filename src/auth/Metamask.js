@@ -13,9 +13,10 @@ export default function Auth() {
 	const [products] = useState(items);
 	const [minting, setMinting] = useState(false);
 	const {active, account, library, activate, deactivate} = useWeb3React();
+	// ----------- eth balance --------
+	const [balance, setBalance] = useState(null);
 	const [modal, setModal] = useState(null);
 	const [data, setData] = useState(false);
-	const [balance, setBalance] = useState(null);
 	const nftModal = useRef();
 	const avatar = useRef();
 
@@ -88,13 +89,12 @@ export default function Auth() {
 			if (currentProvider) {
 				await currentProvider.request({method: "eth_requestAccounts"});
 				const web3 = new Web3(currentProvider);
-				const userAccount = await web3.eth.getAccounts();
-				const account = userAccount[0];
+				const account = await web3.eth.getAccounts();
 				// ----------- get wallet balance --------
-				let ethBalance = await web3.eth.getBalance(account);
+				let balance = await web3.eth.getBalance(account[0]);
 				// ----------- conversion to Wei units --------
-				ethBalance = web3.utils.fromWei(ethBalance, "ether");
-				setBalance(ethBalance);
+				balance = web3.utils.fromWei(balance, "ether");
+				setBalance(balance);
 			}
 		} catch (ex) {
 			console.log(ex);
